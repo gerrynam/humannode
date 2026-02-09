@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 /* Human Node Design System
    Clean B2C Platform Style
-   Light theme with warm orange primary
+   Light theme with navy primary
 */
 
 @layer base {
@@ -21,8 +21,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Primary: Warm Orange for brand */
-    --primary: 24 95% 53%;
+    /* Primary: Navy Blue for brand */
+    --primary: 224 64% 33%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary: Light gray surfaces */
@@ -33,8 +33,8 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    /* Accent: Teal/Cyan for AI elements */
-    --accent: 192 85% 43%;
+    /* Accent: Lighter navy for highlights */
+    --accent: 224 50% 45%;
     --accent-foreground: 0 0% 100%;
 
     /* System colors */
@@ -43,13 +43,13 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 24 95% 53%;
+    --ring: 224 64% 33%;
 
     --radius: 0.75rem;
 
     /* Custom tokens for Human Node */
-    --ai: 192 85% 43%;
-    --human: 24 95% 53%;
+    --ai: 224 64% 33%;
+    --human: 142 70% 45%;
     --partner: 280 60% 55%;
     
     --success: 142 70% 45%;
@@ -62,12 +62,12 @@
     /* Sidebar tokens */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary: 224 64% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 14% 96%;
     --sidebar-accent-foreground: 222 47% 11%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 24 95% 53%;
+    --sidebar-ring: 224 64% 33%;
   }
 }
 
@@ -78,7 +78,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   }
 
   /* Scrollbar styling */
@@ -132,5 +132,10 @@
     50% {
       transform: translateY(-10px);
     }
+  }
+
+  /* Safe area for mobile bottom nav */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
