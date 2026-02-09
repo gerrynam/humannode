@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Job, RequestSource, JobStatus } from "@/types/job";
-import { Bot, Clock, MapPin, User, Puzzle, ArrowRight, Wallet } from "lucide-react";
+import { Bot, Clock, MapPin, User, Puzzle, ArrowRight } from "lucide-react";
 
 interface JobCardProps {
   job: Job;
@@ -49,11 +49,11 @@ export function JobCard({ job, onSelect }: JobCardProps) {
   };
 
   return (
-    <Card className="group relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg">
+    <Card className="group relative overflow-hidden transition-all duration-300 hover:shadow-elevated bg-card border-border">
       {/* Request source indicator line */}
       <div className={`absolute left-0 top-0 h-full w-1 ${
         sourceConfig.variant === "ai" ? "bg-ai" : 
-        sourceConfig.variant === "human" ? "bg-accent" : "bg-partner"
+        sourceConfig.variant === "human" ? "bg-human" : "bg-partner"
       }`} />
 
       <CardHeader className="pb-3">
@@ -77,7 +77,7 @@ export function JobCard({ job, onSelect }: JobCardProps) {
 
       <CardContent className="space-y-3">
         <div>
-          <h3 className="mb-1 font-semibold leading-tight group-hover:text-primary transition-colors">
+          <h3 className="mb-1 font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">
             {job.title}
           </h3>
           <p className="text-sm text-muted-foreground line-clamp-2">

@@ -63,16 +63,13 @@ export default {
         },
         // Human Node custom colors
         ai: {
-          DEFAULT: "hsl(var(--ai-glow))",
-          glow: "hsl(var(--ai-glow))",
+          DEFAULT: "hsl(var(--ai))",
         },
         human: {
-          DEFAULT: "hsl(var(--human-glow))",
-          glow: "hsl(var(--human-glow))",
+          DEFAULT: "hsl(var(--human))",
         },
         partner: {
-          DEFAULT: "hsl(var(--partner-glow))",
-          glow: "hsl(var(--partner-glow))",
+          DEFAULT: "hsl(var(--partner))",
         },
         success: "hsl(var(--success))",
         warning: "hsl(var(--warning))",
@@ -81,6 +78,10 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'card': 'var(--shadow-card)',
+        'elevated': 'var(--shadow-elevated)',
       },
       keyframes: {
         "accordion-down": {
@@ -103,10 +104,6 @@ export default {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
-        "pulse-border": {
-          "0%, 100%": { borderColor: "hsl(var(--primary) / 0.5)" },
-          "50%": { borderColor: "hsl(var(--primary))" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -114,11 +111,6 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in-right": "slide-in-right 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
-        "pulse-border": "pulse-border 2s ease-in-out infinite",
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-mesh": "radial-gradient(at 40% 20%, hsl(192 95% 55% / 0.1) 0px, transparent 50%), radial-gradient(at 80% 0%, hsl(25 95% 55% / 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsl(192 95% 55% / 0.05) 0px, transparent 50%)",
       },
     },
   },

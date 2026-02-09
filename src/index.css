@@ -5,77 +5,69 @@
 @tailwind utilities;
 
 /* Human Node Design System
-   AI-first A2O Platform
-   Dark theme with AI (cyan) / Human (orange) distinction
+   Clean B2C Platform Style
+   Light theme with warm orange primary
 */
 
 @layer base {
   :root {
-    /* Dark theme as default - AI-first aesthetic */
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    /* Light theme - Clean B2C style */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 222 47% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Primary: Electric Cyan for AI elements */
-    --primary: 192 95% 55%;
-    --primary-foreground: 222 47% 6%;
+    /* Primary: Warm Orange for brand */
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Subtle dark surface */
-    --secondary: 222 30% 12%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary: Light gray surfaces */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
 
     /* Muted surfaces */
-    --muted: 222 30% 15%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    /* Accent: Warm Orange for Human elements */
-    --accent: 25 95% 55%;
-    --accent-foreground: 222 47% 6%;
+    /* Accent: Teal/Cyan for AI elements */
+    --accent: 192 85% 43%;
+    --accent-foreground: 0 0% 100%;
 
     /* System colors */
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 15%;
-    --ring: 192 95% 55%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 24 95% 53%;
 
     --radius: 0.75rem;
 
     /* Custom tokens for Human Node */
-    --ai-glow: 192 95% 55%;
-    --human-glow: 25 95% 55%;
-    --partner-glow: 280 70% 60%;
+    --ai: 192 85% 43%;
+    --human: 24 95% 53%;
+    --partner: 280 60% 55%;
     
     --success: 142 70% 45%;
     --warning: 38 92% 50%;
     
-    /* Gradients */
-    --gradient-ai: linear-gradient(135deg, hsl(192 95% 55%) 0%, hsl(210 100% 60%) 100%);
-    --gradient-human: linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 100% 60%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(222 47% 6%) 0%, hsl(222 47% 12%) 50%, hsl(192 50% 15%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(222 47% 10%) 0%, hsl(222 47% 8%) 100%);
-    
-    /* Shadows */
-    --shadow-ai: 0 0 30px -5px hsl(192 95% 55% / 0.3);
-    --shadow-human: 0 0 30px -5px hsl(25 95% 55% / 0.3);
-    --shadow-card: 0 4px 20px -2px hsl(222 47% 4% / 0.5);
-    --shadow-elevated: 0 8px 40px -4px hsl(222 47% 4% / 0.8);
+    /* Shadows - soft and subtle */
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
     /* Sidebar tokens */
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 192 95% 55%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 12%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 15%;
-    --sidebar-ring: 192 95% 55%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 24 95% 53%;
   }
 }
 
@@ -96,7 +88,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(var(--background));
+    background: hsl(var(--secondary));
   }
 
   ::-webkit-scrollbar-thumb {
@@ -110,46 +102,22 @@
 }
 
 @layer utilities {
-  /* Glow effects */
-  .glow-ai {
-    box-shadow: var(--shadow-ai);
-  }
-
-  .glow-human {
-    box-shadow: var(--shadow-human);
-  }
-
-  /* Text gradients */
-  .text-gradient-ai {
-    background: var(--gradient-ai);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-human {
-    background: var(--gradient-human);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
   /* Monospace for technical elements */
   .font-mono {
     font-family: 'JetBrains Mono', monospace;
   }
 
   /* Animation utilities */
-  .animate-pulse-glow {
-    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  @keyframes pulse-glow {
+  @keyframes pulse-subtle {
     0%, 100% {
       opacity: 1;
     }
     50% {
-      opacity: 0.7;
+      opacity: 0.8;
     }
   }
 

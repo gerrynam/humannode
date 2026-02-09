@@ -4,10 +4,10 @@ import { Bot, CheckCircle, CreditCard, FileText, Send, UserCheck } from "lucide-
 const steps = [
   {
     icon: Bot,
-    title: "AI가 Job 생성",
-    description: "AI Agent가 API를 통해 오프라인 작업 요청을 생성합니다.",
-    badge: "AI_AGENT",
-    badgeVariant: "ai" as const,
+    title: "Job 생성",
+    description: "AI Agent 또는 사용자가 오프라인 작업 요청을 생성합니다.",
+    badge: "POSTED",
+    badgeVariant: "secondary" as const,
   },
   {
     icon: FileText,
@@ -33,7 +33,7 @@ const steps = [
   {
     icon: CheckCircle,
     title: "승인",
-    description: "AI 또는 요청자가 결과를 검토하고 승인합니다.",
+    description: "요청자가 결과를 검토하고 승인합니다.",
     badge: "APPROVED",
     badgeVariant: "success" as const,
   },
@@ -48,24 +48,24 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="border-t border-border bg-secondary/30 py-24">
+    <section id="how-it-works" className="border-t border-border bg-background py-24">
       <div className="container">
         <div className="mb-16 text-center">
           <Badge variant="outline" className="mb-4">
             프로세스
           </Badge>
-          <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+          <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             어떻게 작동하나요?
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
-            AI Agent의 요청부터 Worker 정산까지, 
+            요청부터 정산까지, 
             모든 과정이 자동화되어 있습니다.
           </p>
         </div>
 
         <div className="relative">
           {/* Connection line */}
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-ai via-accent to-success lg:block" />
+          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-border lg:block" />
 
           <div className="grid gap-8 lg:gap-12">
             {steps.map((step, index) => (
@@ -79,11 +79,11 @@ export function HowItWorksSection() {
                   <Badge variant={step.badgeVariant} className="mb-2 font-mono text-xs">
                     {step.badge}
                   </Badge>
-                  <h3 className="mb-2 text-xl font-semibold">{step.title}</h3>
+                  <h3 className="mb-2 text-xl font-semibold text-foreground">{step.title}</h3>
                   <p className="text-muted-foreground">{step.description}</p>
                 </div>
 
-                <div className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-border bg-card shadow-lg">
+                <div className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-border bg-card shadow-card">
                   <step.icon className="h-7 w-7 text-primary" />
                 </div>
 

@@ -9,17 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-border bg-transparent hover:bg-secondary hover:border-primary/50",
+        outline: "border border-border bg-background hover:bg-secondary hover:border-primary/30",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-secondary hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         // Human Node custom variants
-        ai: "bg-ai text-primary-foreground hover:bg-ai/90 shadow-md hover:shadow-lg glow-ai",
-        human: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg glow-human",
-        hero: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl text-base font-semibold",
-        "hero-outline": "border-2 border-primary/50 bg-transparent text-primary hover:bg-primary/10 hover:border-primary text-base font-semibold",
+        ai: "bg-ai text-white hover:bg-ai/90 shadow-sm hover:shadow-md",
+        human: "bg-human text-white hover:bg-human/90 shadow-sm hover:shadow-md",
+        hero: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg text-base font-semibold",
+        "hero-outline": "border-2 border-primary bg-transparent text-primary hover:bg-primary/5 text-base font-semibold",
       },
       size: {
         default: "h-10 px-4 py-2",

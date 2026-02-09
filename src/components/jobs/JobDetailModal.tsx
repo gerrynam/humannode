@@ -66,7 +66,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-background">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <Badge variant={sourceConfig.variant} className="gap-1">
@@ -77,7 +77,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
               {statusInfo.label}
             </Badge>
           </div>
-          <DialogTitle className="text-xl">{job.title}</DialogTitle>
+          <DialogTitle className="text-xl text-foreground">{job.title}</DialogTitle>
           <DialogDescription className="text-base">
             {job.description}
           </DialogDescription>
@@ -85,7 +85,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
 
         <div className="space-y-4">
           {/* Budget Section */}
-          <div className="flex items-center justify-between p-4 rounded-lg bg-primary/10 border border-primary/20">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-primary/5 border border-primary/20">
             <div className="flex items-center gap-2">
               <Wallet className="h-5 w-5 text-primary" />
               <span className="text-muted-foreground">보수</span>
@@ -103,7 +103,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
               <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm text-muted-foreground">위치</p>
-                <p className="font-medium">{job.location_text}</p>
+                <p className="font-medium text-foreground">{job.location_text}</p>
                 {job.distance_km && (
                   <p className="text-sm text-muted-foreground">현재 위치에서 {job.distance_km.toFixed(1)}km</p>
                 )}
@@ -114,7 +114,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
               <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm text-muted-foreground">수행 시간</p>
-                <p className="font-medium">{formatDateTime(job.time_start)}</p>
+                <p className="font-medium text-foreground">{formatDateTime(job.time_start)}</p>
                 <p className="text-sm text-muted-foreground">~ {formatDateTime(job.time_end)}</p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm text-muted-foreground">예상 소요 시간</p>
-                <p className="font-medium">약 {job.estimated_duration_min}분</p>
+                <p className="font-medium text-foreground">약 {job.estimated_duration_min}분</p>
               </div>
             </div>
 
@@ -159,7 +159,6 @@ export function JobDetailModal({ job, open, onOpenChange, onAccept }: JobDetailM
           {job.status === "POSTED" ? (
             <>
               <Button 
-                variant="ai" 
                 className="w-full"
                 onClick={() => onAccept?.(job)}
               >

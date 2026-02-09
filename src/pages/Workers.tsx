@@ -43,21 +43,21 @@ export default function WorkersPage() {
             <Users className="h-5 w-5 text-primary" />
             <Badge variant="outline">Human Network</Badge>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Worker 네트워크</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Worker 네트워크</h1>
           <p className="text-muted-foreground">
-            신뢰할 수 있는 Worker들이 AI Agent의 오프라인 업무를 수행합니다.
+            신뢰할 수 있는 Worker들이 오프라인 업무를 수행합니다.
           </p>
         </div>
 
         {/* Stats */}
         <div className="mb-6 flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-success/10 border border-success/30">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-success/10 border border-success/20">
             <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
-            <span className="text-sm font-medium">{activeCount}명 활동중</span>
+            <span className="text-sm font-medium text-foreground">{activeCount}명 활동중</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/30">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/20">
             <Shield className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium">{verifiedCount}명 인증됨</span>
+            <span className="text-sm font-medium text-foreground">{verifiedCount}명 인증됨</span>
           </div>
         </div>
 

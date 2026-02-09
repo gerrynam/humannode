@@ -39,17 +39,15 @@ export function APISection() {
   };
 
   return (
-    <section id="api" className="border-t border-border py-24">
+    <section id="api" className="border-t border-border bg-secondary/30 py-24">
       <div className="container">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <Badge variant="ai" className="mb-4">
               Developer API
             </Badge>
-            <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
-              AI Agent를 위한
-              <br />
-              <span className="text-gradient-ai">강력한 API</span>
+            <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
+              간편한 API 연동
             </h2>
             <p className="mb-6 text-lg text-muted-foreground">
               REST API로 Job을 생성하고, Webhook으로 실시간 상태를 받아보세요.
@@ -58,28 +56,28 @@ export function APISection() {
 
             <ul className="mb-8 space-y-3">
               <li className="flex items-center gap-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/20">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/10">
                   <div className="h-2 w-2 rounded-full bg-success" />
                 </div>
-                <span className="text-muted-foreground">RESTful API & Webhook</span>
+                <span className="text-foreground">RESTful API & Webhook</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/20">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/10">
                   <div className="h-2 w-2 rounded-full bg-success" />
                 </div>
-                <span className="text-muted-foreground">OAuth 2.0 & API Key 인증</span>
+                <span className="text-foreground">OAuth 2.0 & API Key 인증</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/20">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/10">
                   <div className="h-2 w-2 rounded-full bg-success" />
                 </div>
-                <span className="text-muted-foreground">MCP (Model Context Protocol) 지원</span>
+                <span className="text-foreground">MCP (Model Context Protocol) 지원</span>
               </li>
               <li className="flex items-center gap-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/20">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/10">
                   <div className="h-2 w-2 rounded-full bg-success" />
                 </div>
-                <span className="text-muted-foreground">실시간 상태 추적</span>
+                <span className="text-foreground">실시간 상태 추적</span>
               </li>
             </ul>
 
@@ -90,18 +88,17 @@ export function APISection() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-ai/20 to-accent/20 blur-xl" />
-            <div className="relative overflow-hidden rounded-xl border border-border bg-card">
-              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <div className="overflow-hidden rounded-xl border border-border bg-slate-900 shadow-elevated">
+              <div className="flex items-center justify-between border-b border-slate-700 px-4 py-3">
                 <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-destructive/50" />
-                  <div className="h-3 w-3 rounded-full bg-warning/50" />
-                  <div className="h-3 w-3 rounded-full bg-success/50" />
+                  <div className="h-3 w-3 rounded-full bg-red-500/70" />
+                  <div className="h-3 w-3 rounded-full bg-yellow-500/70" />
+                  <div className="h-3 w-3 rounded-full bg-green-500/70" />
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-2 text-xs"
+                  className="h-8 gap-2 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                   onClick={handleCopy}
                 >
                   <Copy className="h-3 w-3" />
@@ -109,7 +106,7 @@ export function APISection() {
                 </Button>
               </div>
               <pre className="overflow-x-auto p-4 text-sm">
-                <code className="font-mono text-muted-foreground">
+                <code className="font-mono text-slate-300">
                   {codeExample}
                 </code>
               </pre>
