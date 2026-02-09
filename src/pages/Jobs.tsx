@@ -3,14 +3,18 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JobCard } from "@/components/jobs/JobCard";
 import { JobFilters } from "@/components/jobs/JobFilters";
+import { JobDetailModal } from "@/components/jobs/JobDetailModal";
 import { Badge } from "@/components/ui/badge";
 import { mockJobs } from "@/data/mockJobs";
 import { RequestSource, Job } from "@/types/job";
 import { Briefcase, MapPin } from "lucide-react";
+import { toast } from "sonner";
 
 export default function JobsPage() {
   const [selectedSource, setSelectedSource] = useState<RequestSource | "ALL">("ALL");
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const filteredJobs = mockJobs.filter((job) => {
     if (selectedSource === "ALL") return true;
@@ -18,8 +22,13 @@ export default function JobsPage() {
   });
 
   const handleSelectJob = (job: Job) => {
-    console.log("Selected job:", job);
-    // TODO: Navigate to job detail or open modal
+    setSelectedJob(job);
+    setModalOpen(true);
+  };
+
+  const handleAcceptJob = (job: Job) => {
+    toast.success(`"${job.title}" Job을 수락했습니다!`);
+    setModalOpen(false);
   };
 
   return (
@@ -89,6 +98,14 @@ export default function JobsPage() {
       </main>
 
       <Footer />
+
+      {/* Job Detail Modal */}
+      <JobDetailModal
+        job={selectedJob}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        onAccept={handleAcceptJob}
+      />
     </div>
   );
 }
