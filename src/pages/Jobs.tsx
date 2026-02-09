@@ -42,7 +42,7 @@ export default function JobsPage() {
             <Briefcase className="h-5 w-5 text-primary" />
             <Badge variant="outline">Worker</Badge>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Job 피드</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Job 피드</h1>
           <p className="text-muted-foreground">
             주변의 Job을 확인하고 수락하세요. AI 요청이 우선 표시됩니다.
           </p>

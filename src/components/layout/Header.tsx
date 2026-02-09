@@ -7,13 +7,13 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm">
       <nav className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-lg font-bold text-primary-foreground">H</span>
           </div>
-          <span className="text-lg font-semibold">Human Node</span>
+          <span className="text-lg font-semibold text-foreground">Human Node</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -34,10 +34,10 @@ export function Header() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Button variant="ghost" size="sm">
-            Sign In
+            로그인
           </Button>
-          <Button variant="hero" size="sm">
-            Get Started
+          <Button size="sm">
+            시작하기
           </Button>
         </div>
 
@@ -86,10 +86,10 @@ export function Header() {
             </a>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">
               <Button variant="ghost" className="justify-start">
-                Sign In
+                로그인
               </Button>
-              <Button variant="hero">
-                Get Started
+              <Button>
+                시작하기
               </Button>
             </div>
           </div>
