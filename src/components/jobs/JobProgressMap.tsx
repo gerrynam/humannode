@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
-import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
-import { GOOGLE_MAPS_API_KEY } from "@/config/googleMaps";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
 
 interface JobProgressMapProps {
   lat: number;
@@ -8,63 +7,32 @@ interface JobProgressMapProps {
   label?: string;
 }
 
-const MAP_STYLES = [
-  { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
-  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
-];
+const pinIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:36px;height:36px;background:#ef4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
+    <span style="color:white;font-size:16px;">📍</span>
+  </div>`,
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+});
 
 export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
-
-    Promise.all([
-      importLibrary("maps"),
-      importLibrary("marker"),
-    ]).then(([mapsLib, markerLib]) => {
-      if (!mapRef.current) return;
-
-      const map = new mapsLib.Map(mapRef.current, {
-        center: { lat, lng },
-        zoom: 16,
-        disableDefaultUI: true,
-        gestureHandling: "none",
-        styles: MAP_STYLES,
-      });
-
-      const markerEl = document.createElement("div");
-      markerEl.innerHTML = `
-        <div style="width:36px;height:36px;background:#ef4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
-          <span style="color:white;font-size:16px;">📍</span>
-        </div>
-      `;
-
-      const marker = new markerLib.AdvancedMarkerElement({
-        position: { lat, lng },
-        map,
-        content: markerEl,
-      });
-
-      if (label) {
-        const InfoWindow = (window as any).google?.maps?.InfoWindow;
-        if (InfoWindow) {
-          const infoWindow = new InfoWindow({ content: label });
-          infoWindow.open({ anchor: marker, map });
-        }
-      }
-
-      mapInstanceRef.current = map;
-    });
-
-    return () => {
-      mapInstanceRef.current = null;
-    };
-  }, []);
-
-  return <div ref={mapRef} className="w-full h-full" />;
+  return (
+    <div className="w-full h-full" style={{ filter: "saturate(0.4) brightness(1.05)" }}>
+      <MapContainer
+        center={[lat, lng]}
+        zoom={16}
+        zoomControl={false}
+        attributionControl={false}
+        dragging={false}
+        scrollWheelZoom={false}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+        <Marker position={[lat, lng]} icon={pinIcon}>
+          {label && <Popup>{label}</Popup>}
+        </Marker>
+      </MapContainer>
+    </div>
+  );
 }
