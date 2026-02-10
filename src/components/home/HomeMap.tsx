@@ -6,6 +6,7 @@ import { Job } from "@/types/job";
 interface HomeMapProps {
   jobs: Job[];
   center?: [number, number];
+  onMapInteraction?: () => void;
 }
 
 const JOB_MARKER_COLOR: Record<string, string> = {
@@ -14,14 +15,28 @@ const JOB_MARKER_COLOR: Record<string, string> = {
   PARTNER_ROUTED: "#8b5cf6",
 };
 
-export function HomeMap({ jobs, center = [37.498, 127.027] }: HomeMapProps) {
+const MAP_STYLES = [
+  { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+];
+
+let optionsSet = false;
+
+export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction }: HomeMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    try { setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" }); } catch {}
+    if (!optionsSet) {
+      setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
+      optionsSet = true;
+    }
 
     Promise.all([
       importLibrary("maps"),
@@ -33,16 +48,17 @@ export function HomeMap({ jobs, center = [37.498, 127.027] }: HomeMapProps) {
         center: { lat: center[0], lng: center[1] },
         zoom: 14,
         disableDefaultUI: true,
-        styles: [
-          { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
-          { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
-          { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
-          { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
-          { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
-          { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
-        ],
-        mapId: "home-map",
+        zoomControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+        styles: MAP_STYLES,
       });
+
+      // Notify parent when user interacts with map
+      if (onMapInteraction) {
+        map.addListener("dragstart", onMapInteraction);
+        map.addListener("zoom_changed", onMapInteraction);
+      }
 
       // Current location pulse
       const currentEl = document.createElement("div");
@@ -75,18 +91,20 @@ export function HomeMap({ jobs, center = [37.498, 127.027] }: HomeMapProps) {
           content: jobEl,
         });
 
-        const InfoWindow = (window as any).google.maps.InfoWindow;
-        const infoWindow = new InfoWindow({
-          content: `<div style="font-family:Pretendard,sans-serif;min-width:120px;padding:4px;">
-            <strong style="font-size:13px;">${job.title}</strong><br/>
-            <span style="color:#1e3a5f;font-weight:700;">${job.budget.toLocaleString()}원</span>
-            <span style="color:#6b7280;font-size:11px;"> · ${job.distance_km?.toFixed(1)}km</span>
-          </div>`,
-        });
+        const InfoWindow = (window as any).google?.maps?.InfoWindow;
+        if (InfoWindow) {
+          const infoWindow = new InfoWindow({
+            content: `<div style="font-family:Pretendard,sans-serif;min-width:120px;padding:4px;">
+              <strong style="font-size:13px;">${job.title}</strong><br/>
+              <span style="color:#1e3a5f;font-weight:700;">${job.budget.toLocaleString()}원</span>
+              <span style="color:#6b7280;font-size:11px;"> · ${job.distance_km?.toFixed(1)}km</span>
+            </div>`,
+          });
 
-        marker.addListener("click", () => {
-          infoWindow.open({ anchor: marker, map });
-        });
+          marker.addListener("click", () => {
+            infoWindow.open({ anchor: marker, map });
+          });
+        }
       });
 
       mapInstanceRef.current = map;

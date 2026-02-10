@@ -8,14 +8,20 @@ interface JobProgressMapProps {
   label?: string;
 }
 
+const MAP_STYLES = [
+  { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+];
+
 export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
-
-    try { setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" }); } catch {}
 
     Promise.all([
       importLibrary("maps"),
@@ -28,14 +34,7 @@ export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
         zoom: 16,
         disableDefaultUI: true,
         gestureHandling: "none",
-        styles: [
-          { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
-          { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
-          { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
-          { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
-          { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
-        ],
-        mapId: "progress-map",
+        styles: MAP_STYLES,
       });
 
       const markerEl = document.createElement("div");
@@ -52,9 +51,11 @@ export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
       });
 
       if (label) {
-        const InfoWindow = (window as any).google.maps.InfoWindow;
-        const infoWindow = new InfoWindow({ content: label });
-        infoWindow.open({ anchor: marker, map });
+        const InfoWindow = (window as any).google?.maps?.InfoWindow;
+        if (InfoWindow) {
+          const infoWindow = new InfoWindow({ content: label });
+          infoWindow.open({ anchor: marker, map });
+        }
       }
 
       mapInstanceRef.current = map;
