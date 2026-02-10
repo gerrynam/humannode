@@ -64,25 +64,51 @@ export default function Home() {
     else snapToState("full");
   }, [sheetHeight, snapToState, fullHeight]);
 
-  const handleListScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+  const handleListTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    dragStartRef.current = { y: e.touches[0].clientY, height: sheetHeight };
+  }, [sheetHeight]);
+
+  const handleListTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
-    if (sheetState === "partial" && el.scrollTop > 0) {
-      el.scrollTop = 0;
-      snapToState("full");
+    const dy = dragStartRef.current.y - e.touches[0].clientY;
+
+    if (sheetState === "minimized") {
+      // Swipe up from minimized → partial
+      if (dy > 30) {
+        snapToState("partial");
+        dragStartRef.current = { y: e.touches[0].clientY, height: PARTIAL_H };
+      }
+    } else if (sheetState === "partial") {
+      if (dy > 30) {
+        snapToState("full");
+        dragStartRef.current = { y: e.touches[0].clientY, height: fullHeight };
+      } else if (dy < -30) {
+        snapToState("minimized");
+        dragStartRef.current = { y: e.touches[0].clientY, height: MINIMIZED_H };
+      }
+    } else if (sheetState === "full") {
+      // At top of scroll, swipe down → partial
+      if (el.scrollTop <= 0 && dy < -30) {
+        snapToState("partial");
+        dragStartRef.current = { y: e.touches[0].clientY, height: PARTIAL_H };
+      }
     }
-  }, [sheetState, snapToState]);
+  }, [sheetState, snapToState, fullHeight]);
 
   const handleListWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
-    if (sheetState === "partial" && e.deltaY < 0) {
-      e.preventDefault();
-      snapToState("full");
-    } else if (sheetState === "full" && el.scrollTop <= 0 && e.deltaY > 0) {
+    if (sheetState === "minimized" && e.deltaY < 0) {
       e.preventDefault();
       snapToState("partial");
+    } else if (sheetState === "partial" && e.deltaY < 0) {
+      e.preventDefault();
+      snapToState("full");
     } else if (sheetState === "partial" && e.deltaY > 0) {
       e.preventDefault();
       snapToState("minimized");
+    } else if (sheetState === "full" && el.scrollTop <= 0 && e.deltaY > 0) {
+      e.preventDefault();
+      snapToState("partial");
     }
   }, [sheetState, snapToState]);
 
@@ -196,10 +222,12 @@ export default function Home() {
           <div
             ref={listRef}
             className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 min-h-0"
-            onScroll={handleListScroll}
+            onTouchStart={handleListTouchStart}
+            onTouchMove={handleListTouchMove}
             onWheel={handleListWheel}
             style={{
               overflowY: sheetState === "full" ? "auto" : "hidden",
+              touchAction: sheetState === "full" ? "auto" : "none",
             }}
           >
             {postedJobs.map((job) => (
