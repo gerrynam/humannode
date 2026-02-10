@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { HomeMap } from "@/components/home/HomeMap";
@@ -11,10 +11,9 @@ import { toast } from "sonner";
 
 type SheetState = "minimized" | "partial" | "full";
 
-const MINIMIZED_H = 48;  // just handle bar
-const PARTIAL_H = 280;   // ~2 cards
-const HEADER_H = 56;     // top status toggle area
-const BOTTOM_NAV = 64;   // bottom nav height
+const MINIMIZED_H = 48;
+const PARTIAL_H = 280;
+const BOTTOM_NAV = 64;
 
 export default function Home() {
   const navigate = useNavigate();
@@ -24,16 +23,15 @@ export default function Home() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  // Sheet state
   const [sheetState, setSheetState] = useState<SheetState>("partial");
   const [sheetHeight, setSheetHeight] = useState(PARTIAL_H);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ y: 0, height: 0 });
-  const sheetRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const maxHeight = typeof window !== "undefined"
-    ? window.innerHeight - BOTTOM_NAV - HEADER_H
+  // Full height = entire viewport minus bottom nav (covers map completely)
+  const fullHeight = typeof window !== "undefined"
+    ? window.innerHeight - BOTTOM_NAV
     : 600;
 
   const snapToState = useCallback((state: SheetState) => {
@@ -41,11 +39,10 @@ export default function Home() {
     switch (state) {
       case "minimized": setSheetHeight(MINIMIZED_H); break;
       case "partial": setSheetHeight(PARTIAL_H); break;
-      case "full": setSheetHeight(maxHeight); break;
+      case "full": setSheetHeight(fullHeight); break;
     }
-  }, [maxHeight]);
+  }, [fullHeight]);
 
-  // Handle touch drag on the handle bar
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     dragStartRef.current = { y: e.touches[0].clientY, height: sheetHeight };
     setIsDragging(true);
@@ -54,58 +51,43 @@ export default function Home() {
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging) return;
     const dy = dragStartRef.current.y - e.touches[0].clientY;
-    const newH = Math.max(MINIMIZED_H, Math.min(maxHeight, dragStartRef.current.height + dy));
+    const newH = Math.max(MINIMIZED_H, Math.min(fullHeight, dragStartRef.current.height + dy));
     setSheetHeight(newH);
-  }, [isDragging, maxHeight]);
+  }, [isDragging, fullHeight]);
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
-    // Snap to nearest state
     const thresholdLow = (MINIMIZED_H + PARTIAL_H) / 2;
-    const thresholdHigh = (PARTIAL_H + maxHeight) / 2;
-    if (sheetHeight < thresholdLow) {
-      snapToState("minimized");
-    } else if (sheetHeight < thresholdHigh) {
-      snapToState("partial");
-    } else {
-      snapToState("full");
-    }
-  }, [sheetHeight, snapToState, maxHeight]);
+    const thresholdHigh = (PARTIAL_H + fullHeight) / 2;
+    if (sheetHeight < thresholdLow) snapToState("minimized");
+    else if (sheetHeight < thresholdHigh) snapToState("partial");
+    else snapToState("full");
+  }, [sheetHeight, snapToState, fullHeight]);
 
-  // Handle scroll inside list to transition between states
   const handleListScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
     if (sheetState === "partial" && el.scrollTop > 0) {
-      // User scrolling up in partial → go full
       el.scrollTop = 0;
       snapToState("full");
     }
   }, [sheetState, snapToState]);
 
-  // Handle wheel on list for transitions
   const handleListWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
-
     if (sheetState === "partial" && e.deltaY < 0) {
-      // Scroll up in partial → full
       e.preventDefault();
       snapToState("full");
     } else if (sheetState === "full" && el.scrollTop <= 0 && e.deltaY > 0) {
-      // At top of full, scroll down → partial
       e.preventDefault();
       snapToState("partial");
     } else if (sheetState === "partial" && e.deltaY > 0) {
-      // Scroll down in partial → minimized
       e.preventDefault();
       snapToState("minimized");
     }
   }, [sheetState, snapToState]);
 
-  // Map interaction → minimize sheet
   const handleMapInteraction = useCallback(() => {
-    if (sheetState !== "minimized") {
-      snapToState("minimized");
-    }
+    if (sheetState !== "minimized") snapToState("minimized");
   }, [sheetState, snapToState]);
 
   const handleJobClick = (job: Job) => {
@@ -124,24 +106,44 @@ export default function Home() {
     setSelectedJob(null);
   };
 
+  const isFull = sheetState === "full" || sheetHeight >= fullHeight - 10;
+
   return (
     <AppLayout showHeader={false}>
-      <div className="flex flex-col h-[calc(100vh-4rem)] relative">
+      <div className="flex flex-col h-[calc(100vh-4rem)] relative overflow-hidden">
         {/* Top status toggle */}
         <div className="absolute top-4 left-4 right-4 z-[500]">
           <StatusToggle isOnline={isOnline} onToggle={() => setIsOnline(!isOnline)} />
         </div>
 
-        {/* Map area - fills everything */}
+        {/* Map area */}
         <div className="flex-1 min-h-0">
-          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} onSearchArea={() => toast.info("이 지역에서 검색합니다")} />
+          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} />
         </div>
+
+        {/* Search button - floats above the sheet */}
+        {!isFull && (
+          <div
+            className="absolute left-1/2 -translate-x-1/2 z-[502]"
+            style={{
+              bottom: sheetHeight + 12,
+              transition: isDragging ? "none" : "bottom 0.3s cubic-bezier(0.25,1,0.5,1)",
+            }}
+          >
+            <button
+              onClick={() => toast.info("이 지역에서 검색합니다")}
+              className="bg-white border-2 border-primary text-primary text-sm font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors whitespace-nowrap"
+            >
+              이 지역에서 검색
+            </button>
+          </div>
+        )}
 
         {/* Draggable bottom sheet */}
         <div
-          ref={sheetRef}
-          className="absolute bottom-0 left-0 right-0 z-[501] bg-background rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex flex-col"
+          className={`absolute left-0 right-0 z-[501] bg-background flex flex-col shadow-[0_-4px_20px_rgba(0,0,0,0.1)] ${isFull ? "rounded-none" : "rounded-t-2xl"}`}
           style={{
+            bottom: 0,
             height: sheetHeight,
             transition: isDragging ? "none" : "height 0.3s cubic-bezier(0.25,1,0.5,1)",
           }}
@@ -157,14 +159,14 @@ export default function Home() {
               setIsDragging(true);
               const onMove = (ev: MouseEvent) => {
                 const dy = dragStartRef.current.y - ev.clientY;
-                const newH = Math.max(MINIMIZED_H, Math.min(maxHeight, dragStartRef.current.height + dy));
+                const newH = Math.max(MINIMIZED_H, Math.min(fullHeight, dragStartRef.current.height + dy));
                 setSheetHeight(newH);
               };
               const onUp = () => {
                 setIsDragging(false);
                 const h = sheetHeight;
                 const thresholdLow = (MINIMIZED_H + PARTIAL_H) / 2;
-                const thresholdHigh = (PARTIAL_H + maxHeight) / 2;
+                const thresholdHigh = (PARTIAL_H + fullHeight) / 2;
                 if (h < thresholdLow) snapToState("minimized");
                 else if (h < thresholdHigh) snapToState("partial");
                 else snapToState("full");
@@ -181,7 +183,7 @@ export default function Home() {
             <div className="w-10 h-1 rounded-full bg-border" />
           </div>
 
-          {/* Header - shown when not minimized */}
+          {/* Header */}
           {sheetHeight > MINIMIZED_H && (
             <div className="px-4 pb-2 shrink-0">
               <h2 className="text-sm font-semibold text-foreground">
@@ -216,7 +218,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Job Call Bottom Sheet */}
+        {/* Job Call Bottom Sheet - above everything */}
         <JobCallSheet
           job={selectedJob}
           open={sheetOpen}
