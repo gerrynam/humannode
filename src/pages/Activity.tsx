@@ -57,9 +57,9 @@ export default function Activity() {
         {currentList.length === 0 && (
           <div className="flex h-48 items-center justify-center rounded-xl border border-dashed border-border">
             <p className="text-sm text-muted-foreground">
-              {tab === "in_progress" && "진행중인 Job이 없습니다"}
-              {tab === "completed" && "완료된 Job이 없습니다"}
-              {tab === "canceled" && "취소된 Job이 없습니다"}
+              {tab === "in_progress" && "진행중인 요청이 없습니다"}
+              {tab === "completed" && "완료된 요청이 없습니다"}
+              {tab === "canceled" && "취소된 요청이 없습니다"}
             </p>
           </div>
         )}

@@ -21,7 +21,7 @@ export function HomeMap({ jobs, center = [37.498, 127.027] }: HomeMapProps) {
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
+    try { setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" }); } catch {}
 
     Promise.all([
       importLibrary("maps"),

@@ -32,7 +32,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm pb-safe">
       <div className="flex items-center justify-around max-w-lg mx-auto">
         <NavItem to="/" icon={<Home className="h-5 w-5" />} label="홈" />
-        <NavItem to="/jobs" icon={<Briefcase className="h-5 w-5" />} label="Jobs" />
+        <NavItem to="/jobs" icon={<Briefcase className="h-5 w-5" />} label="요청" />
         <NavItem to="/activity" icon={<ClipboardList className="h-5 w-5" />} label="활동" />
         <NavItem to="/mypage" icon={<User className="h-5 w-5" />} label="마이" />
       </div>

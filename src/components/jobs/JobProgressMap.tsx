@@ -15,7 +15,7 @@ export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
+    try { setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" }); } catch {}
 
     Promise.all([
       importLibrary("maps"),
