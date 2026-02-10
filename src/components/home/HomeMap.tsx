@@ -85,6 +85,9 @@ export function HomeMap({ jobs, center = [37.498, 127.027] }: HomeMapProps) {
           0% { transform: scale(1); opacity: 1; }
           100% { transform: scale(2.5); opacity: 0; }
         }
+        .leaflet-tile-pane {
+          filter: saturate(0.3) brightness(1.05) contrast(0.95);
+        }
       `}</style>
       <div ref={mapRef} className="w-full h-full" />
     </>
