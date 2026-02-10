@@ -1,4 +1,4 @@
-import { Home, Briefcase, Users, User } from "lucide-react";
+import { Home, Briefcase, ClipboardList, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export function BottomNav() {
       <div className="flex items-center justify-around max-w-lg mx-auto">
         <NavItem to="/" icon={<Home className="h-5 w-5" />} label="홈" />
         <NavItem to="/jobs" icon={<Briefcase className="h-5 w-5" />} label="Jobs" />
-        <NavItem to="/workers" icon={<Users className="h-5 w-5" />} label="Workers" />
+        <NavItem to="/activity" icon={<ClipboardList className="h-5 w-5" />} label="활동" />
         <NavItem to="/mypage" icon={<User className="h-5 w-5" />} label="마이" />
       </div>
     </nav>
