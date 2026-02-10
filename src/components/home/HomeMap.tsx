@@ -42,7 +42,7 @@ function MapEvents({ onMapInteraction }: { onMapInteraction?: () => void }) {
 
 export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction }: HomeMapProps) {
   return (
-    <div className="w-full h-full" style={{ filter: "saturate(0.4) brightness(1.05)" }}>
+    <div className="w-full h-full" style={{ filter: "saturate(0.75) brightness(1.02)" }}>
       <MapContainer
         center={center}
         zoom={14}
@@ -50,7 +50,7 @@ export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction }: 
         attributionControl={false}
         style={{ width: "100%", height: "100%" }}
       >
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MapEvents onMapInteraction={onMapInteraction} />
 
         {/* Current location */}
