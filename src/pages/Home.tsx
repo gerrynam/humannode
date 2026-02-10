@@ -134,7 +134,7 @@ export default function Home() {
 
         {/* Map area - fills everything */}
         <div className="flex-1 min-h-0">
-          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} />
+          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} onSearchArea={() => toast.info("이 지역에서 검색합니다")} />
         </div>
 
         {/* Draggable bottom sheet */}
