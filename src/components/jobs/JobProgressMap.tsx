@@ -44,5 +44,14 @@ export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
     };
   }, []);
 
-  return <div ref={mapRef} className="w-full h-full" />;
+  return (
+    <>
+      <style>{`
+        .leaflet-tile-pane {
+          filter: saturate(0.3) brightness(1.05) contrast(0.95);
+        }
+      `}</style>
+      <div ref={mapRef} className="w-full h-full" />
+    </>
+  );
 }
