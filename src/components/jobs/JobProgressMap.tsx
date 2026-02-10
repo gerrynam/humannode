@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
+import { GOOGLE_MAPS_API_KEY } from "@/config/googleMaps";
 
 interface JobProgressMapProps {
   lat: number;
@@ -10,48 +10,60 @@ interface JobProgressMapProps {
 
 export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
+  const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    const map = L.map(mapRef.current, {
-      zoomControl: false,
-      attributionControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-    }).setView([lat, lng], 16);
+    setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-    }).addTo(map);
+    Promise.all([
+      importLibrary("maps"),
+      importLibrary("marker"),
+    ]).then(([mapsLib, markerLib]) => {
+      if (!mapRef.current) return;
 
-    const icon = L.divIcon({
-      className: "destination-marker",
-      html: `<div style="width:36px;height:36px;background:hsl(0,84%,60%);border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
-        <span style="color:white;font-size:16px;">📍</span>
-      </div>`,
-      iconSize: [36, 36],
-      iconAnchor: [18, 18],
+      const map = new mapsLib.Map(mapRef.current, {
+        center: { lat, lng },
+        zoom: 16,
+        disableDefaultUI: true,
+        gestureHandling: "none",
+        styles: [
+          { elementType: "geometry", stylers: [{ saturation: -60 }, { lightness: 10 }] },
+          { elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
+          { featureType: "road", elementType: "geometry", stylers: [{ lightness: 30 }] },
+          { featureType: "water", elementType: "geometry", stylers: [{ saturation: -40 }, { lightness: 20 }] },
+          { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+        ],
+        mapId: "progress-map",
+      });
+
+      const markerEl = document.createElement("div");
+      markerEl.innerHTML = `
+        <div style="width:36px;height:36px;background:#ef4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
+          <span style="color:white;font-size:16px;">📍</span>
+        </div>
+      `;
+
+      const marker = new markerLib.AdvancedMarkerElement({
+        position: { lat, lng },
+        map,
+        content: markerEl,
+      });
+
+      if (label) {
+        const InfoWindow = (window as any).google.maps.InfoWindow;
+        const infoWindow = new InfoWindow({ content: label });
+        infoWindow.open({ anchor: marker, map });
+      }
+
+      mapInstanceRef.current = map;
     });
-    const marker = L.marker([lat, lng], { icon }).addTo(map);
-    if (label) marker.bindPopup(label).openPopup();
 
-    mapInstanceRef.current = map;
     return () => {
-      map.remove();
       mapInstanceRef.current = null;
     };
   }, []);
 
-  return (
-    <>
-      <style>{`
-        .leaflet-tile-pane {
-          filter: saturate(0.3) brightness(1.05) contrast(0.95);
-        }
-      `}</style>
-      <div ref={mapRef} className="w-full h-full" />
-    </>
-  );
+  return <div ref={mapRef} className="w-full h-full" />;
 }
