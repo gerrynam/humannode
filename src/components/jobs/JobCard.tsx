@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Job, RequestSource } from "@/types/job";
 import { Bot, Clock, MapPin, User, Puzzle } from "lucide-react";
+import { getBudgetColor } from "@/lib/budget";
 
 interface JobCardProps {
   job: Job;
@@ -60,20 +60,9 @@ export function JobCard({ job, onSelect, onAccept }: JobCardProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-lg font-bold text-primary">
+          <span className="text-lg font-bold" style={{ color: getBudgetColor(job.budget) }}>
             {job.budget.toLocaleString()}원
           </span>
-          {job.status === "POSTED" && onAccept && (
-            <Button
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAccept(job);
-              }}
-            >
-              수락
-            </Button>
-          )}
         </div>
       </div>
     </Card>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, CircleMarker, Circle, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import { Job } from "@/types/job";
+import { getBudgetColor } from "@/lib/budget";
 
 interface HomeMapProps {
   jobs: Job[];
@@ -18,19 +19,13 @@ const JOB_MARKER_COLOR: Record<string, string> = {
 function createJobIcon(color: string) {
   return L.divIcon({
     className: "",
-    html: `<div style="width:32px;height:32px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;">
-      <span style="color:white;font-size:12px;font-weight:700;">₩</span>
+    html: `<div style="width:24px;height:24px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <span style="color:white;font-size:10px;font-weight:700;">₩</span>
     </div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -16],
   });
-}
-
-function getBudgetColor(budget: number): string {
-  if (budget >= 50000) return "#0ea5e9"; // sky-500
-  if (budget >= 30000) return "#38bdf8"; // sky-400
-  if (budget >= 15000) return "#7dd3fc"; // sky-300
-  return "#bae6fd"; // sky-200
 }
 
 function MapEvents({ onMapInteraction }: { onMapInteraction?: () => void }) {
@@ -65,10 +60,12 @@ function AutoOpenMarker({ job, color, autoOpen }: { job: Job; color: string; aut
   return (
     <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)}>
       <Popup closeButton={false} autoClose closeOnClick>
-        <div style={{ fontFamily: "Pretendard, sans-serif", padding: 0 }}>
-          <strong style={{ fontSize: 13 }}>{job.title}</strong><br />
-          <span style={{ color: budgetColor, fontWeight: 700, fontSize: 13 }}>{job.budget.toLocaleString()}원</span>
-          <span style={{ color: "#6b7280", fontSize: 11, marginLeft: 3 }}>{job.distance_km?.toFixed(1)}km</span>
+        <div style={{ fontFamily: "Pretendard, sans-serif", padding: 0, minWidth: 140 }}>
+          <strong style={{ fontSize: 13, display: "block", marginBottom: 2 }}>{job.title}</strong>
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline", gap: 4 }}>
+            <span style={{ color: budgetColor, fontWeight: 700, fontSize: 13 }}>{job.budget.toLocaleString()}원</span>
+            <span style={{ color: "#9ca3af", fontSize: 11 }}>{job.distance_km?.toFixed(1)}km</span>
+          </div>
         </div>
       </Popup>
     </Marker>
