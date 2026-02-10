@@ -64,7 +64,7 @@ function AutoOpenMarker({ job, color, autoOpen }: { job: Job; color: string; aut
 
   return (
     <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)}>
-      <Popup closeButton={false} autoClose={!autoOpen} closeOnClick={!autoOpen}>
+      <Popup closeButton={false} autoClose closeOnClick>
         <div style={{ fontFamily: "Pretendard, sans-serif", padding: 0 }}>
           <strong style={{ fontSize: 13 }}>{job.title}</strong><br />
           <span style={{ color: budgetColor, fontWeight: 700, fontSize: 13 }}>{job.budget.toLocaleString()}원</span>

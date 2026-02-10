@@ -12,8 +12,8 @@
   margin: 6px 8px;
   font-size: 13px;
 }
-.leaflet-popup-tip {
-  border-top: 2.5px solid hsl(224, 64%, 33%);
+.leaflet-popup-tip-container {
+  display: none !important;
 }
 .leaflet-popup-close-button {
   display: none !important;
