@@ -1,18 +1,7 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 @import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
 
-/* Leaflet tooltip overrides */
-.job-tooltip-permanent {
-  background: white;
-  border: 2.5px solid hsl(224, 64%, 33%);
-  border-radius: 6px;
-  padding: 2px 6px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  font-size: 12px;
-}
-.job-tooltip-permanent::before {
-  border-top-color: hsl(224, 64%, 33%) !important;
-}
+/* Leaflet popup overrides */
 .leaflet-popup-content-wrapper {
   border: 2.5px solid hsl(224, 64%, 33%);
   border-radius: 8px;
