@@ -21,6 +21,10 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T10:00:00Z",
     distance_km: 1.2,
     estimated_duration_min: 30,
+    finding_tip: "강남역 2번 출구에서 직진 300m, 우측 유리 외벽 건물 3층",
+    parking_tip: "건물 지하주차장 이용 가능 (30분 무료)",
+    requester_note: "정면 사진은 건물 전체가 나오도록 촬영해주세요. 입구 간판도 꼭 포함해주세요.",
+    deliverables: ["건물 전면 사진 1장", "좌측면 사진 1장", "우측면 사진 1장", "입구 근접 사진 2장"],
   },
   {
     id: "job_002",
@@ -42,6 +46,9 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T09:30:00Z",
     distance_km: 0.8,
     estimated_duration_min: 15,
+    finding_tip: "역삼역 3번 출구 바로 옆, 1층 GS25 간판 확인",
+    requester_note: "코카콜라 제로, 펩시 제로, 스프라이트 제로 3종의 진열 상태와 수량을 확인해주세요.",
+    deliverables: ["음료 진열대 전체 사진 1장", "각 음료별 근접 사진 3장", "재고 수량 텍스트 보고"],
   },
   {
     id: "job_003",
@@ -64,6 +71,10 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T08:00:00Z",
     distance_km: 2.3,
     estimated_duration_min: 60,
+    finding_tip: "선릉역 1번 출구 기준, 도보 5분 거리에 3곳 모두 위치",
+    parking_tip: "선릉역 공영주차장 이용 (시간당 3,000원)",
+    requester_note: "메뉴판 전체가 잘 보이도록 촬영해주세요. 가격표가 선명하게 나와야 합니다.",
+    deliverables: ["스타벅스 메뉴판 사진", "블루보틀 메뉴판 사진", "메가커피 메뉴판 사진"],
   },
   {
     id: "job_004",
@@ -84,6 +95,9 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T17:45:00Z",
     distance_km: 3.1,
     estimated_duration_min: 25,
+    finding_tip: "교촌치킨 강남점 1층, 배달 출입구는 후문",
+    requester_note: "소스 많이 넣어주세요",
+    deliverables: ["치킨 1마리 배달 완료"],
   },
   {
     id: "job_005",
@@ -105,6 +119,10 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T11:00:00Z",
     distance_km: 4.5,
     estimated_duration_min: 120,
+    finding_tip: "청담역 1번 출구에서 도보 10분, 청담 래미안 아파트 정문",
+    parking_tip: "아파트 방문자 주차 가능 (관리실 문의)",
+    requester_note: "각 시설까지 실제 도보 시간을 스톱워치로 측정해주세요. GPS 경로 캡처도 부탁드립니다.",
+    deliverables: ["아파트 단지 전경 사진", "가장 가까운 초등학교 사진 + 도보 시간", "가장 가까운 마트 사진 + 도보 시간", "가장 가까운 병원 사진 + 도보 시간"],
   },
   {
     id: "job_006",
@@ -126,5 +144,9 @@ export const mockJobs: Job[] = [
     created_at: "2025-02-09T07:00:00Z",
     distance_km: 3.8,
     estimated_duration_min: 20,
+    finding_tip: "코엑스 A홀 정문 입구, 에스컬레이터 옆 기둥에 설치됨",
+    parking_tip: "코엑스 지하주차장 B2 이용 (행사 참가자 할인)",
+    requester_note: "현수막이 정상적으로 걸려 있는지, 훼손 부분은 없는지 확인해주세요.",
+    deliverables: ["현수막 전체 사진 1장", "현수막 좌측 상세 1장", "현수막 우측 상세 1장"],
   },
 ];

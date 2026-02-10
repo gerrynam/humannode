@@ -40,4 +40,9 @@ export interface Job {
   expires_at?: string;
   distance_km?: number;
   estimated_duration_min?: number;
+  // New fields for progress flow
+  finding_tip?: string;
+  parking_tip?: string;
+  requester_note?: string;
+  deliverables?: string[];
 }
