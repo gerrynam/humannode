@@ -27,7 +27,7 @@ export default function Jobs() {
   };
 
   const handleAcceptJob = (job: Job) => {
-    toast.success(`"${job.title}" Job을 수락했습니다!`);
+    toast.success(`"${job.title}" 요청을 수락했습니다!`);
     setSheetOpen(false);
     navigate(`/jobs/${job.id}/progress`);
   };
@@ -38,7 +38,7 @@ export default function Jobs() {
   };
 
   return (
-    <AppLayout title="Jobs">
+    <AppLayout title="요청">
       <div className="container px-4 py-4">
         {/* Filters */}
         <div className="mb-4">
@@ -50,7 +50,7 @@ export default function Jobs() {
 
         {/* Job count */}
         <div className="mb-3 text-sm text-muted-foreground">
-          실시간 Job {filteredJobs.length}건
+          실시간 요청 {filteredJobs.length}건
         </div>
 
         {/* Job List */}
@@ -69,7 +69,7 @@ export default function Jobs() {
         {filteredJobs.length === 0 && (
           <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border">
             <div className="text-center text-muted-foreground">
-              <p>해당 조건의 Job이 없습니다</p>
+              <p>해당 조건의 요청이 없습니다</p>
             </div>
           </div>
         )}

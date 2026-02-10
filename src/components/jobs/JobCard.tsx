@@ -71,7 +71,7 @@ export function JobCard({ job, onSelect, onAccept }: JobCardProps) {
                 onAccept(job);
               }}
             >
-              수락하기
+              수락
             </Button>
           )}
         </div>

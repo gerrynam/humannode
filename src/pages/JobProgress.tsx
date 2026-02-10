@@ -22,7 +22,7 @@ export default function JobProgress() {
   if (!job) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Job을 찾을 수 없습니다</p>
+        <p className="text-muted-foreground">요청을 찾을 수 없습니다</p>
       </div>
     );
   }
