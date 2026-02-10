@@ -18,7 +18,7 @@ const pinIcon = L.divIcon({
 
 export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
   return (
-    <div className="w-full h-full" style={{ filter: "saturate(0.55) brightness(1.03)" }}>
+    <div className="w-full h-full" style={{ filter: "saturate(0.65) brightness(1.0)" }}>
       <MapContainer
         center={[lat, lng]}
         zoom={16}
@@ -28,7 +28,7 @@ export function JobProgressMap({ lat, lng, label }: JobProgressMapProps) {
         scrollWheelZoom={false}
         style={{ width: "100%", height: "100%" }}
       >
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
         <Marker position={[lat, lng]} icon={pinIcon}>
           {label && <Popup>{label}</Popup>}
         </Marker>
