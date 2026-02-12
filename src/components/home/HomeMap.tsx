@@ -8,6 +8,7 @@ interface HomeMapProps {
   jobs: Job[];
   center?: [number, number];
   onMapInteraction?: () => void;
+  onMarkerClick?: (jobId: string) => void;
 }
 
 const JOB_MARKER_COLOR: Record<string, string> = {
@@ -44,7 +45,7 @@ function MapEvents({ onMapInteraction }: { onMapInteraction?: () => void }) {
 
 const AUTO_OPEN_COUNT = 3;
 
-function AutoOpenMarker({ job, color, autoOpen }: { job: Job; color: string; autoOpen: boolean }) {
+function AutoOpenMarker({ job, color, autoOpen, onMarkerClick }: { job: Job; color: string; autoOpen: boolean; onMarkerClick?: (jobId: string) => void }) {
   const markerRef = useRef<L.Marker>(null);
 
   useEffect(() => {
@@ -54,6 +55,14 @@ function AutoOpenMarker({ job, color, autoOpen }: { job: Job; color: string; aut
       }, 500);
     }
   }, [autoOpen]);
+
+  useEffect(() => {
+    const marker = markerRef.current;
+    if (!marker || !onMarkerClick) return;
+    const handler = () => onMarkerClick(job.id);
+    marker.on("popupopen", handler);
+    return () => { marker.off("popupopen", handler); };
+  }, [job.id, onMarkerClick]);
 
   const budgetColor = getBudgetColor(job.budget);
 
@@ -72,7 +81,7 @@ function AutoOpenMarker({ job, color, autoOpen }: { job: Job; color: string; aut
   );
 }
 
-export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction }: HomeMapProps) {
+export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction, onMarkerClick }: HomeMapProps) {
   return (
     <div className="w-full h-full" style={{ filter: "saturate(0.65) brightness(1.0)" }}>
       <MapContainer
@@ -96,6 +105,7 @@ export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction }: 
               job={job}
               color={color}
               autoOpen={idx < AUTO_OPEN_COUNT}
+              onMarkerClick={onMarkerClick}
             />
           );
         })}

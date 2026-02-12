@@ -116,6 +116,22 @@ export default function Home() {
     if (sheetState !== "minimized") snapToState("minimized");
   }, [sheetState, snapToState]);
 
+  const handleMarkerClick = useCallback((jobId: string) => {
+    // Expand sheet so the list is visible, then scroll to the card
+    if (sheetState !== "full") {
+      snapToState("partial");
+    }
+    // Use rAF to wait for sheet expansion before scrolling
+    requestAnimationFrame(() => {
+      const container = listRef.current;
+      if (!container) return;
+      const cardEl = container.querySelector(`[data-job-id="${jobId}"]`) as HTMLElement | null;
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }, [sheetState, snapToState]);
+
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
     setSheetOpen(true);
@@ -144,7 +160,7 @@ export default function Home() {
 
         {/* Map area */}
         <div className="flex-1 min-h-0">
-          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} />
+          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} onMarkerClick={handleMarkerClick} />
         </div>
 
         {/* Search button - floats above the sheet */}
@@ -231,12 +247,13 @@ export default function Home() {
             }}
           >
             {postedJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onSelect={handleJobClick}
-                onAccept={handleAcceptJob}
-              />
+              <div key={job.id} data-job-id={job.id}>
+                <JobCard
+                  job={job}
+                  onSelect={handleJobClick}
+                  onAccept={handleAcceptJob}
+                />
+              </div>
             ))}
             {postedJobs.length === 0 && (
               <div className="flex h-24 items-center justify-center">
