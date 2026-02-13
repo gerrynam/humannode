@@ -47,6 +47,7 @@ const AUTO_OPEN_COUNT = 3;
 
 function AutoOpenMarker({ job, color, autoOpen, onPopupClick }: { job: Job; color: string; autoOpen: boolean; onPopupClick?: (jobId: string) => void }) {
   const markerRef = useRef<L.Marker>(null);
+  const map = useMap();
 
   useEffect(() => {
     if (autoOpen && markerRef.current) {
@@ -56,10 +57,14 @@ function AutoOpenMarker({ job, color, autoOpen, onPopupClick }: { job: Job; colo
     }
   }, [autoOpen]);
 
+  const handleMarkerClick = () => {
+    map.panTo([job.lat, job.lng]);
+  };
+
   const budgetColor = getBudgetColor(job.budget);
 
   return (
-    <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)}>
+    <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)} eventHandlers={{ click: handleMarkerClick }}>
       <Popup closeButton={false} autoClose closeOnClick>
         <div
           onClick={() => onPopupClick?.(job.id)}
