@@ -116,7 +116,7 @@ export default function Home() {
     if (sheetState !== "minimized") snapToState("minimized");
   }, [sheetState, snapToState]);
 
-  const handleMarkerClick = useCallback((jobId: string) => {
+  const handlePopupClick = useCallback((jobId: string) => {
     // Expand sheet so the list is visible, then scroll to the card
     if (sheetState !== "full") {
       snapToState("partial");
@@ -160,7 +160,7 @@ export default function Home() {
 
         {/* Map area */}
         <div className="flex-1 min-h-0">
-          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} onMarkerClick={handleMarkerClick} />
+          <HomeMap jobs={postedJobs} onMapInteraction={handleMapInteraction} onPopupClick={handlePopupClick} />
         </div>
 
         {/* Search button - floats above the sheet */}
