@@ -58,14 +58,14 @@ function AutoOpenMarker({ job, color, autoOpen, onPopupClick }: { job: Job; colo
   }, [autoOpen]);
 
   const handleMarkerClick = () => {
-    map.panTo([job.lat, job.lng]);
+    map.flyTo([job.lat, job.lng], map.getZoom(), { duration: 0.5 });
   };
 
   const budgetColor = getBudgetColor(job.budget);
 
   return (
     <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)} eventHandlers={{ click: handleMarkerClick }}>
-      <Popup closeButton={false} autoClose closeOnClick>
+      <Popup closeButton={false} autoClose closeOnClick autoPan={false}>
         <div
           onClick={() => onPopupClick?.(job.id)}
           style={{ fontFamily: "Pretendard, sans-serif", padding: 0, minWidth: 140, cursor: "pointer" }}
