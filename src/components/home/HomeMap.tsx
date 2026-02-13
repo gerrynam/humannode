@@ -8,7 +8,7 @@ interface HomeMapProps {
   jobs: Job[];
   center?: [number, number];
   onMapInteraction?: () => void;
-  onMarkerClick?: (jobId: string) => void;
+  onPopupClick?: (jobId: string) => void;
 }
 
 const JOB_MARKER_COLOR: Record<string, string> = {
@@ -45,7 +45,7 @@ function MapEvents({ onMapInteraction }: { onMapInteraction?: () => void }) {
 
 const AUTO_OPEN_COUNT = 3;
 
-function AutoOpenMarker({ job, color, autoOpen, onMarkerClick }: { job: Job; color: string; autoOpen: boolean; onMarkerClick?: (jobId: string) => void }) {
+function AutoOpenMarker({ job, color, autoOpen, onPopupClick }: { job: Job; color: string; autoOpen: boolean; onPopupClick?: (jobId: string) => void }) {
   const markerRef = useRef<L.Marker>(null);
 
   useEffect(() => {
@@ -56,20 +56,15 @@ function AutoOpenMarker({ job, color, autoOpen, onMarkerClick }: { job: Job; col
     }
   }, [autoOpen]);
 
-  useEffect(() => {
-    const marker = markerRef.current;
-    if (!marker || !onMarkerClick) return;
-    const handler = () => onMarkerClick(job.id);
-    marker.on("popupopen", handler);
-    return () => { marker.off("popupopen", handler); };
-  }, [job.id, onMarkerClick]);
-
   const budgetColor = getBudgetColor(job.budget);
 
   return (
     <Marker ref={markerRef} position={[job.lat, job.lng]} icon={createJobIcon(color)}>
       <Popup closeButton={false} autoClose closeOnClick>
-        <div style={{ fontFamily: "Pretendard, sans-serif", padding: 0, minWidth: 140 }}>
+        <div
+          onClick={() => onPopupClick?.(job.id)}
+          style={{ fontFamily: "Pretendard, sans-serif", padding: 0, minWidth: 140, cursor: "pointer" }}
+        >
           <strong style={{ fontSize: 13, display: "block", marginBottom: 2 }}>{job.title}</strong>
           <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline", gap: 4 }}>
             <span style={{ color: budgetColor, fontWeight: 700, fontSize: 13 }}>{job.budget.toLocaleString()}원</span>
@@ -81,7 +76,7 @@ function AutoOpenMarker({ job, color, autoOpen, onMarkerClick }: { job: Job; col
   );
 }
 
-export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction, onMarkerClick }: HomeMapProps) {
+export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction, onPopupClick }: HomeMapProps) {
   return (
     <div className="w-full h-full" style={{ filter: "saturate(0.65) brightness(1.0)" }}>
       <MapContainer
@@ -105,7 +100,7 @@ export function HomeMap({ jobs, center = [37.498, 127.027], onMapInteraction, on
               job={job}
               color={color}
               autoOpen={idx < AUTO_OPEN_COUNT}
-              onMarkerClick={onMarkerClick}
+              onPopupClick={onPopupClick}
             />
           );
         })}
